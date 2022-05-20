@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-list-directory-contents",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "vite-plugin",
   "main": "dist/plugin.js",
   "module": "dist/index.mjs",
