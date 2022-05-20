@@ -38,7 +38,7 @@ export default defineConfig({
 
 4. go ahead and run `vite` from your cli, or set a `"dev": "vite"` in your `package.json scripts"
 
-## Config
+### Config
 
 directoryPlugin has two arguments:
 
@@ -47,6 +47,6 @@ directoryPlugin has two arguments:
 
 
 
+## Contributing
 
-
-
+Edit `plugin.ts`, then run `npm run build` to build a copy. Edits welcome :)
