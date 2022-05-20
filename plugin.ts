@@ -42,7 +42,7 @@ type PluginArgs = {
   filterList?: string[]
 }
 
-export function htmlPlugin({ baseDir, filterList }: PluginArgs) {
+export function directoryPlugin({ baseDir, filterList }: PluginArgs) {
   if(!filterList) {
     filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages'];
   }
