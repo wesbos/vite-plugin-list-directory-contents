@@ -2,6 +2,8 @@
 
 A small vite plugin to list your directory contents.
 
+![](./dist/cool.png)
+
 **Why?** In development mode, vite will allow you to have as many inputs as you want, simply run `vite .` and the current folder will be served up. Clicking any `.html` files will be compiled by vite (vited?). So, rather than manually type in the paths to all your inputs, this will list all your files so you can click them with ease. Like the good 'ol `Index Of /` days.
 
 
@@ -21,7 +23,20 @@ export default defineConfig({
 });
 ```
 
-3. go ahead and run `vite` from your cli, or set a `"dev": "vite"` in your `package.json scripts"
+3. You'll need to create an `index.html` file in the root of where you are serving from. You can put anything in this file, and it will be processed by vite, but the important part is adding a `{%DIRECTORY%}` template tag that will be replaced with the directory listing. Here is a good base:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+  </head>
+  <body>{%DIRECTORY%}</body>
+</html>
+```
+
+4. go ahead and run `vite` from your cli, or set a `"dev": "vite"` in your `package.json scripts"
 
 ## Config
 
