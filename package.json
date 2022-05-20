@@ -3,9 +3,10 @@
   "version": "0.0.2",
   "description": "vite-plugin",
   "main": "dist/plugin.js",
+  "module": "dist/index.mjs",
   "types": "dist/plugin.d.ts",
   "scripts": {
-    "build": "tsup plugin.ts --dts"
+    "build": "tsup plugin.ts --dts --format esm,cjs"
   },
   "author": "Wes Bos",
   "license": "ISC",
