@@ -13,9 +13,9 @@ declare type PluginArgs = {
     baseDir: string;
     filterList?: string[];
 };
-declare function htmlPlugin({ baseDir, filterList }: PluginArgs): {
+declare function directoryPlugin({ baseDir, filterList }: PluginArgs): {
     name: string;
     transformIndexHtml(html: string, ctx: ViteContext): Promise<string>;
 };
 
-export { htmlPlugin };
+export { directoryPlugin };

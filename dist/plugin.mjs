@@ -18,7 +18,7 @@ function makeListFromDirectory(directoryListing, base, filters) {
         </li>`).join("");
   return links;
 }
-function htmlPlugin({ baseDir, filterList }) {
+function directoryPlugin({ baseDir, filterList }) {
   if (!filterList) {
     filterList = [".DS_Store", "package.json", "package-lock.json", "node_modules", ".parcelrc", ".parcel-cache", "dist", "packages"];
   }
@@ -84,5 +84,5 @@ var css = `
   }
 `;
 export {
-  htmlPlugin
+  directoryPlugin
 };

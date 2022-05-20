@@ -22,7 +22,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // plugin.ts
 var plugin_exports = {};
 __export(plugin_exports, {
-  htmlPlugin: () => htmlPlugin
+  directoryPlugin: () => directoryPlugin
 });
 module.exports = __toCommonJS(plugin_exports);
 var path = __toESM(require("path"));
@@ -44,7 +44,7 @@ function makeListFromDirectory(directoryListing, base, filters) {
         </li>`).join("");
   return links;
 }
-function htmlPlugin({ baseDir, filterList }) {
+function directoryPlugin({ baseDir, filterList }) {
   if (!filterList) {
     filterList = [".DS_Store", "package.json", "package-lock.json", "node_modules", ".parcelrc", ".parcel-cache", "dist", "packages"];
   }
@@ -111,5 +111,5 @@ var css = `
 `;
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  htmlPlugin
+  directoryPlugin
 });
