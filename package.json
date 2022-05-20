@@ -3,17 +3,18 @@
   "version": "1.0.1",
   "description": "vite-plugin",
   "main": "dist/plugin.js",
-  "module": "dist/index.mjs",
+  "module": "dist/plugin.mjs",
   "types": "dist/plugin.d.ts",
   "exports": {
     "./*": "./*",
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/plugin.js",
+      "import": "./dist/plugin.mjs",
+      "types": "./dist/plugin.d.ts"
     }
   },
   "scripts": {
+    "dev": "vite dev",
     "build": "vite build"
   },
   "author": "Wes Bos",
