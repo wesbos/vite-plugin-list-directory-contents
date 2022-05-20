@@ -14,14 +14,14 @@
     }
   },
   "scripts": {
-    "build": "tsup plugin.ts --dts --format esm,cjs"
+    "build": "vite build"
   },
   "author": "Wes Bos",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^17.0.35",
-    "tsup": "^5.12.8",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "vite-dts": "^1.0.4"
   },
   "dependencies": {
     "vite": "^2.9.9"
