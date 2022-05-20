@@ -2,10 +2,10 @@
   "name": "vite-plugin-list-directory-contents",
   "version": "0.0.2",
   "description": "vite-plugin",
-  "main": "plugin.js",
+  "main": "dist/plugin.js",
+  "types": "dist/plugin.d.ts",
   "scripts": {
-    "build": "tsup plugin.ts --dts",
-    "bump": "npm version patch"
+    "build": "tsup plugin.ts --dts"
   },
   "author": "Wes Bos",
   "license": "ISC",
