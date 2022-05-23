@@ -2,7 +2,7 @@
 
 A small vite plugin to list your directory contents.
 
-![](./dist/cool.png)
+![](./public/cool.png)
 
 **Why?** In development mode, vite will allow you to have as many inputs as you want, simply run `vite .` and the current folder will be served up. Clicking any `.html` files will be compiled by vite (vited?). So, rather than manually type in the paths to all your inputs, this will list all your files so you can click them with ease. Like the good 'ol `Index Of /` days.
 
