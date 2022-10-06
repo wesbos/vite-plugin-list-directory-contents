@@ -1,16 +1,16 @@
 {
   "name": "vite-plugin-list-directory-contents",
-  "version": "1.1.0",
-  "description": "vite-plugin",
+  "version": "1.1.1",
+  "description": "A Vite plugin for listing the directory contents when working with the dev server",
   "main": "dist/plugin.js",
-  "module": "dist/index.mjs",
+  "module": "dist/plugin.mjs",
   "types": "dist/plugin.d.ts",
   "exports": {
     "./*": "./*",
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/plugin.js",
+      "import": "./dist/plugin.mjs",
+      "types": "./dist/plugin.d.ts"
     }
   },
   "scripts": {
