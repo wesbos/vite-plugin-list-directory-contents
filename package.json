@@ -5,6 +5,7 @@
   "main": "dist/plugin.js",
   "module": "dist/plugin.mjs",
   "types": "dist/plugin.d.ts",
+  "type": "module",
   "homepage": "https://github.com/wesbos/vite-plugin-list-directory-contents#readme",
   "exports": {
     "./*": "./*",
@@ -15,7 +16,8 @@
     }
   },
   "scripts": {
-    "build": "tsup plugin.ts --dts --format esm,cjs"
+    "build": "tsup plugin.ts --dts --format esm,cjs",
+    "demo": "vite demo"
   },
   "author": "Wes Bos",
   "license": "ISC",
