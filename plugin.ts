@@ -104,6 +104,9 @@ const css = /*css*/`
     display: block;
     padding: 10px 20px;
     text-decoration: none;
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
   a:hover {
     background: var(--subtle);
