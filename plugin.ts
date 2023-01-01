@@ -2,6 +2,7 @@ import { ViteDevServer, PluginOption, Plugin } from 'vite';
 import * as path from 'path';
 import { readdir } from 'fs/promises'
 import { Dirent } from 'fs';
+import { getIconForFile, getSVGStringFromFileType,getIconForFolder } from '@wesbos/code-icons';
 
 type ViteContextDocs = {
   path: string
@@ -29,13 +30,16 @@ function makeListFromDirectory(directoryListing: Dirent[], base: string, filters
     }, [[], []] as [Dirent[], Dirent[]])
     .flat()
     .filter(dirent => !filters.includes(dirent.name))
-    .map(file => `<li>
-        <a href="${base === '/' ? '' : base}/${file.name}">
-           ${file.isDirectory() ? '🗂' : ''}
-           ${file.name.endsWith('.html') ? '🖥' : ''}
+    .map(file => {
+      const icon = file.isDirectory() ? getIconForFolder(file.name) : getIconForFile(file.name);
+      const { svg } = getSVGStringFromFileType(icon);
+      return `<li>
+        <a href="${base === '/' ? '' : base}/${file.name === 'index.html' ? '.' : file.name}">
+          ${svg}
           ${file.name}
         </a>
-        </li>`).join('');
+        </li>`;
+    }).join('');
 
     return links;
 }
@@ -47,7 +51,7 @@ type PluginArgs = {
 
 export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOption {
   if(!filterList) {
-    filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages'];
+    filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages', '.git', '.eslintrc', '.gitignore', '.npmrc', 'tsconfig.json', 'vite.config.ts'];
   }
   const plugin: Plugin = {
     name: 'vite-plugin-list-directory-contents',
@@ -106,6 +110,9 @@ const css = /*css*/`
   }
   li {
     border-bottom: 1px solid var(--subtle);
+  }
+  li svg {
+    width: 20px;
   }
   li:last-child {
     border-bottom: none;
