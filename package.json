@@ -5,6 +5,7 @@
   "main": "dist/plugin.js",
   "module": "dist/plugin.mjs",
   "types": "dist/plugin.d.ts",
+  "homepage": "https://github.com/wesbos/vite-plugin-list-directory-contents#readme",
   "exports": {
     "./*": "./*",
     ".": {
