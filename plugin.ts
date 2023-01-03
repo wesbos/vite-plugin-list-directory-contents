@@ -58,7 +58,6 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
     name: 'vite-plugin-list-directory-contents',
     // only apply during dev
     apply: 'serve',
-    // enforce: 'pre',
     handleHotUpdate({ server, file }) {
       const folder = path.dirname(file.replace(baseDir, ''));
       const filename = path.basename(file);
