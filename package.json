@@ -3,27 +3,31 @@
   "version": "1.4.1",
   "description": "A Vite plugin for listing the directory contents when working with the dev server",
   "homepage": "https://github.com/wesbos/vite-plugin-list-directory-contents#readme",
-  "type": "module",
+  "//type": "module",
   "main": "dist/plugin.js",
+  "module": "dist/plugin.mjs",
   "types": "dist/plugin.d.ts",
   "exports": {
     "./*": "./*",
     ".": {
-      "require": "./dist/plugin.cjs",
-      "import": "./dist/plugin.js",
+      "require": "./dist/plugin.js",
+      "import": "./dist/plugin.mjs",
       "types": "./dist/plugin.d.ts"
     }
   },
   "scripts": {
-    "build": "tsup plugin.ts --dts --format esm,cjs",
-    "demo": "vite demo"
+    "build:tsup": "tsup plugin.ts --dts --format esm,cjs",
+    "demo": "vite demo",
+    "dev": "vite dev",
+    "build": "vite build"
   },
   "author": "Wes Bos",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.18",
     "tsup": "^6.5.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "vite-dts": "^1.0.4"
   },
   "dependencies": {
     "@wesbos/code-icons": "^1.1.5",
