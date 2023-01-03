@@ -1,6 +1,6 @@
 import { ViteDevServer, PluginOption, Plugin } from 'vite';
 import * as path from 'path';
-import { readdir } from 'fs/promises'
+import { readdir, access, writeFile } from 'fs/promises'
 import { Dirent } from 'fs';
 import { getIconForFile, getSVGStringFromFileType,getIconForFolder } from '@wesbos/code-icons';
 
@@ -44,6 +44,25 @@ function makeListFromDirectory(directoryListing: Dirent[], base: string, filters
     return links;
 }
 
+const fallbackHTML = /*html*/`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Vite Dev Server</title>
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <!--
+      This file was Generated for you by the vite-plugin-list-directory-contents plugin.
+      You can edit anything in here. Just leave the DIRECTORY tag where you want the directory listing to go.
+
+      ❤️ @wesbos
+    -->
+    {%DIRECTORY%}
+  </body>
+</html>`;
+
+
 type PluginArgs = {
   baseDir: string
   filterList?: string[]
@@ -51,7 +70,7 @@ type PluginArgs = {
 
 export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOption {
   if(!filterList) {
-    filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages', '.git', '.eslintrc', '.gitignore', '.npmrc', 'tsconfig.json', 'vite.config.ts'];
+    filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages', '.git', '.eslintrc', '.gitignore', '.npmrc', 'tsconfig.json', 'vite.config.ts', '.env', 'development.env', 'production.env'];
   }
 
   const plugin: Plugin = {
@@ -61,8 +80,27 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
     handleHotUpdate({ server, file }) {
       const folder = path.dirname(file.replace(baseDir, ''));
       const filename = path.basename(file);
-      console.log('HOT', file);
       server.ws.send('vite:directoryChanged', { file, __dirname, baseDir, folder, filename });
+    },
+    async configureServer(server) {
+      // return a post hook that is called after internal middlewares are
+      // installed
+      // Check if they have an index.html in their baseDir wit node.js
+      const indexPath = path.join(baseDir, 'index.html');
+      let indexExists = false;
+      try {
+        await access(indexPath);
+        indexExists = true;
+      } catch (err) {
+        setTimeout(() => {
+          console.log('\x1b[33m%s\x1b[0m', `⚡️ [vite-plugin-list-directory-contents]: No index.html found in baseDir.
+⚡️ Don't worry! We will now make you one for you at
+⚡️ ${indexPath}
+`);
+        }, 1000); // add a delay because Vite clears the console
+        // create index.html file
+        await writeFile(indexPath, fallbackHTML);
+      }
     },
     async transformIndexHtml(html: string, ctx: ViteContextDocs) {
       // the Vite plugin types dont include context.originalUrl so some reason so I'm casting
@@ -70,8 +108,7 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
       // vite falls back to index.html if no other file matches
       if (!ctx.filename.endsWith('index.html')) return html;
       const currentFolder = path.join(baseDir, context.originalUrl.replace('/index.html', ''));
-
-      // watch current Dir
+      // watch current Dir - this is so Vite will watch the files on our directory listing
       context.server.watcher.unwatch(currentFolder);
       context.server.watcher.add(currentFolder);
 
