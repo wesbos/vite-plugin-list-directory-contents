@@ -1,5 +1,5 @@
 import { ViteDevServer, PluginOption, Plugin } from 'vite';
-import * as path from 'path';
+import { dirname, basename, join} from 'path';
 import { readdir, access, writeFile } from 'fs/promises'
 import { Dirent } from 'fs';
 import { getIconForFile, getSVGStringFromFileType,getIconForFolder } from '@wesbos/code-icons';
@@ -78,15 +78,15 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
     // only apply during dev
     apply: 'serve',
     handleHotUpdate({ server, file }) {
-      const folder = path.dirname(file.replace(baseDir, ''));
-      const filename = path.basename(file);
+      const folder = dirname(file.replace(baseDir, ''));
+      const filename = basename(file);
       server.ws.send('vite:directoryChanged', { file, __dirname, baseDir, folder, filename });
     },
     async configureServer(server) {
       // return a post hook that is called after internal middlewares are
       // installed
       // Check if they have an index.html in their baseDir wit node.js
-      const indexPath = path.join(baseDir, 'index.html');
+      const indexPath = join(baseDir, 'index.html');
       let indexExists = false;
       try {
         await access(indexPath);
@@ -107,7 +107,7 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
       const context = ctx as ViteContext;
       // vite falls back to index.html if no other file matches
       if (!ctx.filename.endsWith('index.html')) return html;
-      const currentFolder = path.join(baseDir, context.originalUrl.replace('/index.html', ''));
+      const currentFolder = join(baseDir, context.originalUrl.replace('/index.html', ''));
       // watch current Dir - this is so Vite will watch the files on our directory listing
       context.server.watcher.unwatch(currentFolder);
       context.server.watcher.add(currentFolder);

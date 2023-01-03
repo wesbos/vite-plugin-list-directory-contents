@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
+    "skipLibCheck": true,
     "module": "esnext",
     "types": [
       "node"
