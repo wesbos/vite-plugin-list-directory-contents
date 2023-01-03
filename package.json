@@ -16,7 +16,6 @@
   },
   "scripts": {
     "build": "tsup plugin.ts --dts --format esm,cjs",
-    "publish": "npm run build && npm publish",
     "demo": "vite demo"
   },
   "author": "Wes Bos",
