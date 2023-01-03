@@ -54,9 +54,6 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
     filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages', '.git', '.eslintrc', '.gitignore', '.npmrc', 'tsconfig.json', 'vite.config.ts'];
   }
 
-  const virtualModuleId = 'virtual:my-module'
-  const resolvedVirtualModuleId = '\0' + virtualModuleId
-
   const plugin: Plugin = {
     name: 'vite-plugin-list-directory-contents',
     // only apply during dev
