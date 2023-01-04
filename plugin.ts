@@ -80,7 +80,7 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
     handleHotUpdate({ server, file }) {
       const folder = dirname(file.replace(baseDir, ''));
       const filename = basename(file);
-      server.ws.send('vite:directoryChanged', { file, __dirname, baseDir, folder, filename });
+      server.ws.send('vite:directoryChanged', { baseDir, folder, filename });
     },
     async configureServer(server) {
       // return a post hook that is called after internal middlewares are
