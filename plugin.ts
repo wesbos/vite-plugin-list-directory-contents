@@ -70,7 +70,7 @@ type PluginArgs = {
 
 export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOption {
   if(!filterList) {
-    filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages', '.git', '.eslintrc', '.gitignore', '.npmrc', 'tsconfig.json', 'vite.config.ts', '.env', 'development.env', 'production.env'];
+    filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages', '.git', '.eslintrc', '.gitignore', '.npmrc', 'tsconfig.json', 'vite.config.ts', 'vite.config.js', '.env', 'development.env', 'production.env', '.vite'];
   }
 
   const plugin: Plugin = {
@@ -168,7 +168,7 @@ const css = /*css*/`
     text-align: center;
   }
   body {
-    font-family: 'Operator Mono', 'Dank Mono', 'Fira Code', 'monospace';
+    font-family: 'Operator Mono', 'Dank Mono', 'Fira Code', 'Consolas', monospace;
     font-weight: 200;
     background: var(--blue);
     color: white;
