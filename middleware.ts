@@ -22,7 +22,7 @@ export function indexFallbackMiddleware(
             return rewritten;
           }
 
-          return spaFallback ? `/../fallback.html` : request.url;
+          return spaFallback ? `/../index.html` : request.url;
         },
       },
     ],

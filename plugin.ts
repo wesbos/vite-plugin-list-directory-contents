@@ -155,6 +155,7 @@ export function directoryPlugin({
     // });
 
     return function () {
+      console.log(server.middlewares.stack);
       server.middlewares.stack = server.middlewares.stack.filter(
         (middleware) =>
           // remove the vite middleware
@@ -181,6 +182,10 @@ export function directoryPlugin({
     name: 'vite-plugin-list-directory-contents',
     // only apply during dev
     apply: 'serve',
+    transform(code, id, options) {
+      console.log('TRANSFORM');
+      console.log({ id });
+    },
     handleHotUpdate({ server, file }) {
       const folder = dirname(file.replace(baseDir, ''));
       const filename = basename(file);
@@ -199,6 +204,7 @@ export function directoryPlugin({
       // watch current Dir - this is so Vite will watch the files on our directory listing
       context.server.watcher.unwatch(currentFolder);
       context.server.watcher.add(currentFolder);
+      context.server.watcher.add('../index.html');
 
       // 2.  Get a listing of files in the directory
       const directoryListing: Dirent[] = await readdir(currentFolder, {
