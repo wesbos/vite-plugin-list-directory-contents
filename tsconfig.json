@@ -5,6 +5,8 @@
     "module": "esnext",
     "types": [
       "node"
-    ]
+    ],
+    "esModuleInterop": true,
+    "target": "esnext"
   }
 }

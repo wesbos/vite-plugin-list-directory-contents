@@ -1,50 +1,71 @@
 import { ViteDevServer, PluginOption, Plugin } from 'vite';
-import { dirname, basename, join} from 'path';
-import { readdir, access, writeFile } from 'fs/promises'
+import path, { dirname, basename, join } from 'path';
+import { fileURLToPath } from 'node:url';
+import { readdir, access, writeFile } from 'fs/promises';
 import { Dirent } from 'fs';
-import { getIconForFile, getSVGStringFromFileType,getIconForFolder } from '@wesbos/code-icons';
+import {
+  getIconForFile,
+  getSVGStringFromFileType,
+  getIconForFolder,
+} from '@wesbos/code-icons';
+import { indexFallbackMiddleware } from './middleware.js';
+
+/* eslint-disable-next-line */
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 type ViteContextDocs = {
-  path: string
-  filename: string
-  server?: ViteDevServer
-  bundle?: import('rollup').OutputBundle
-  chunk?: import('rollup').OutputChunk
-}
+  path: string;
+  filename: string;
+  server?: ViteDevServer;
+  bundle?: import('rollup').OutputBundle;
+  chunk?: import('rollup').OutputChunk;
+};
 
 type ViteContext = ViteContextDocs & {
-  originalUrl?: string
-}
+  originalUrl?: string;
+};
 
-function makeListFromDirectory(directoryListing: Dirent[], base: string, filters: string[]) {
+function makeListFromDirectory(
+  directoryListing: Dirent[],
+  base: string,
+  filters: string[]
+) {
   // 3. Generate a listing of links
   const links = directoryListing
     // .sort((a, b) => a.isDirectory() ? 1 : -1)
-    .reduce((acc, file: Dirent) => {
-      if(file.isDirectory()) {
-        acc[0].push(file)
-      } else {
-        acc[1].push(file)
-      }
-      return acc;
-    }, [[], []] as [Dirent[], Dirent[]])
+    .reduce(
+      (acc, file: Dirent) => {
+        if (file.isDirectory()) {
+          acc[0].push(file);
+        } else {
+          acc[1].push(file);
+        }
+        return acc;
+      },
+      [[], []] as [Dirent[], Dirent[]]
+    )
     .flat()
-    .filter(dirent => !filters.includes(dirent.name))
-    .map(file => {
-      const icon = file.isDirectory() ? getIconForFolder(file.name) : getIconForFile(file.name);
+    .filter((dirent) => !filters.includes(dirent.name))
+    .map((file) => {
+      const icon = file.isDirectory()
+        ? getIconForFolder(file.name)
+        : getIconForFile(file.name);
       const { svg } = getSVGStringFromFileType(icon);
       return `<li>
-        <a data-filename="${file.name}" href="${base === '/' ? '' : base}/${file.name === 'index.html' ? '.' : file.name}">
+        <a data-filename="${file.name}" href="${base === '/' ? '' : base}/${
+        file.name === 'index.html' ? '.' : file.name
+      }">
           ${svg}
           ${file.name}
         </a>
         </li>`;
-    }).join('');
+    })
+    .join('');
 
-    return links;
+  return links;
 }
 
-const fallbackHTML = /*html*/`<!DOCTYPE html>
+const fallbackHTML = /* html */ `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -62,15 +83,98 @@ const fallbackHTML = /*html*/`<!DOCTYPE html>
   </body>
 </html>`;
 
-
 type PluginArgs = {
-  baseDir: string
-  filterList?: string[]
-}
+  baseDir: string;
+  filterList?: string[];
+};
 
-export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOption {
-  if(!filterList) {
-    filterList = ['.DS_Store', 'package.json', 'package-lock.json', 'node_modules', '.parcelrc', '.parcel-cache', 'dist', 'packages', '.git', '.eslintrc', '.gitignore', '.npmrc', 'tsconfig.json', 'vite.config.ts', 'vite.config.js', '.env', 'development.env', 'production.env', '.vite'];
+export function directoryPlugin({
+  baseDir,
+  filterList,
+}: PluginArgs): PluginOption {
+  if (!filterList) {
+    filterList = [
+      '.DS_Store',
+      'package.json',
+      'package-lock.json',
+      'node_modules',
+      '.parcelrc',
+      '.parcel-cache',
+      'dist',
+      'packages',
+      '.git',
+      '.eslintrc',
+      '.gitignore',
+      '.npmrc',
+      'tsconfig.json',
+      'vite.config.ts',
+      'vite.config.js',
+      '.env',
+      'development.env',
+      'production.env',
+      '.vite',
+    ];
+  }
+
+  async function configureServerIndex(server) {
+    // return a post hook that is called after internal middlewares are
+    // installed
+    // Check if they have an index.html in their baseDir wit node.js
+    const indexPath = join(baseDir, 'index.html');
+    let indexExists = false;
+    try {
+      await access(indexPath);
+      indexExists = true;
+    } catch (err) {
+      setTimeout(() => {
+        console.log(
+          '\x1b[33m%s\x1b[0m',
+          `⚡️ [vite-plugin-list-directory-contents]: No index.html found in baseDir.
+  ⚡️ Don't worry! We will now make you one for you at
+  ⚡️ ${indexPath}
+  `
+        );
+      }, 1000); // add a delay because Vite clears the console
+      // create index.html file
+      await writeFile(indexPath, fallbackHTML);
+    }
+  }
+
+  function configureServer(server: ViteDevServer) {
+    // server.middlewares.use((req, res, next) => {
+    //   console.log('req.url', req.url);
+    // if (req.url === '/') {
+    //   // TODO; check if index exists
+    //   const relative = path.relative(baseDir, __dirname);
+    //   // req.url = path.join(relative, '/fallback.html');
+    //   req.url = `/${relative}/fallback.html`;
+    //   console.log('req.url', req.url);
+    // }
+    // next();
+    //   next();
+    // });
+
+    return function () {
+      server.middlewares.stack = server.middlewares.stack.filter(
+        (middleware) =>
+          // remove the vite middleware
+          !middleware.handle.toString().includes('viteHtmlFallbackMiddleware')
+      );
+      const num = 8;
+      server.middlewares.stack = [
+        ...server.middlewares.stack,
+        { route: '', handle: indexFallbackMiddleware(baseDir, true) },
+      ];
+      console.log(server.middlewares.stack);
+
+      server.middlewares.use((req, res, next) => {
+        console.log(req.url);
+        next();
+      });
+      console.log(server.middlewares.stack);
+    };
+
+    // server.middlewares.use(htmlFallbackMiddleware)
   }
 
   const plugin: Plugin = {
@@ -82,49 +186,47 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
       const filename = basename(file);
       server.ws.send('vite:directoryChanged', { baseDir, folder, filename });
     },
-    async configureServer(server) {
-      // return a post hook that is called after internal middlewares are
-      // installed
-      // Check if they have an index.html in their baseDir wit node.js
-      const indexPath = join(baseDir, 'index.html');
-      let indexExists = false;
-      try {
-        await access(indexPath);
-        indexExists = true;
-      } catch (err) {
-        setTimeout(() => {
-          console.log('\x1b[33m%s\x1b[0m', `⚡️ [vite-plugin-list-directory-contents]: No index.html found in baseDir.
-⚡️ Don't worry! We will now make you one for you at
-⚡️ ${indexPath}
-`);
-        }, 1000); // add a delay because Vite clears the console
-        // create index.html file
-        await writeFile(indexPath, fallbackHTML);
-      }
-    },
+    configureServer,
     async transformIndexHtml(html: string, ctx: ViteContextDocs) {
       // the Vite plugin types dont include context.originalUrl so some reason so I'm casting
       const context = ctx as ViteContext;
       // vite falls back to index.html if no other file matches
       if (!ctx.filename.endsWith('index.html')) return html;
-      const currentFolder = join(baseDir, context.originalUrl.replace('/index.html', ''));
+      const currentFolder = join(
+        baseDir,
+        context.originalUrl.replace('/index.html', '')
+      );
       // watch current Dir - this is so Vite will watch the files on our directory listing
       context.server.watcher.unwatch(currentFolder);
       context.server.watcher.add(currentFolder);
 
       // 2.  Get a listing of files in the directory
-      const directoryListing: Dirent[] = await readdir(currentFolder, { withFileTypes: true });
-      const fileArray = directoryListing.map(dirent => dirent.name);
+      const directoryListing: Dirent[] = await readdir(currentFolder, {
+        withFileTypes: true,
+      });
+      const fileArray = directoryListing.map((dirent) => dirent.name);
 
-      const listItems = makeListFromDirectory(directoryListing, context.originalUrl, filterList);
+      const listItems = makeListFromDirectory(
+        directoryListing,
+        context.originalUrl,
+        filterList
+      );
 
       const folder = context.originalUrl;
       return html.replace(
         '{%DIRECTORY%}',
-        /*html*/`<h2>Index Of ${context.originalUrl}</h2>
+        /* html */ `<h2>Index Of ${context.originalUrl}</h2>
         <ul>
-          ${context.originalUrl === '/' ? '' : '<li><a href="..">⬆️ Up a level</a></li>'}
-          ${listItems.length ? listItems : '<li><a href=".">👻 It\'s very quiet in here. Make a file or two and get coding!</a><li>'}
+          ${
+            context.originalUrl === '/'
+              ? ''
+              : '<li><a href="..">⬆️ Up a level</a></li>'
+          }
+          ${
+            listItems.length
+              ? listItems
+              : '<li><a href=".">👻 It\'s very quiet in here. Make a file or two and get coding!</a><li>'
+          }
         </ul>
         <style>${css}</style>
         <script type="module">
@@ -151,13 +253,13 @@ export function directoryPlugin({ baseDir, filterList }: PluginArgs): PluginOpti
         </script>
         <!-- 🥰 Generated by a Vite Plugin, Made by Wes Bos for Tasty TypeScript-->
         `
-      )
+      );
     },
-  }
+  };
   return plugin;
 }
 
-const css = /*css*/`
+const css = /* css */ `
   html {
     --blue: #193549;
     --yellow: #ffc600;
