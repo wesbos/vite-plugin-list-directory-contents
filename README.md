@@ -7,7 +7,9 @@
 </p>
 
 ⚡ Works with [Vite] \
-📂 Great for `test/my-test.html` project layouts
+📂 Great for `test/my-test.html` project layouts \
+🖥️ Rendered on the server only in development \
+📦 Doesn't affect your build output
 
 ## Installation
 
