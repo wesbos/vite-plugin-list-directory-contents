@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-directory-index",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "📂 Directory index plugin for the Vite dev server",
   "keywords": [
     "directory-index",
@@ -21,7 +21,8 @@
   "type": "module",
   "exports": "./dist/directoryIndex.js",
   "files": [
-    "dist"
+    "dist",
+    "assets"
   ],
   "workspaces": [
     "test"
