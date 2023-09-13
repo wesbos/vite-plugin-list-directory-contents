@@ -1,0 +1,12 @@
+{
+  "name": "test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vite"
+  },
+  "dependencies": {
+    "vite": "^4.4.9",
+    "vite-plugin-directory-index": "file:.."
+  }
+}
