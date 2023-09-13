@@ -2,6 +2,15 @@
   "name": "vite-plugin-directory-index",
   "version": "2.0.0",
   "description": "📂 Directory index pages plugin for the Vite dev server",
+  "keywords": [
+    "directory-index",
+    "folder-list",
+    "folder",
+    "directory",
+    "vite",
+    "vite-plugin",
+    "vite-plugin-list-directory-contents"
+  ],
   "homepage": "https://github.com/jcbhmr/vite-plugin-directory-index#readme",
   "bugs": "https://github.com/jcbhmr/vite-plugin-directory-index/issues",
   "repository": "github:jcbhmr/vite-plugin-directory-index",
