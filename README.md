@@ -1,6 +1,6 @@
 # Directory index plugin for Vite
 
-📂 Directory index pages plugin for the Vite dev server
+📂 Directory index plugin for the Vite dev server
 
 <p align=center>
   <img src="https://i.imgur.com/TNMoGhn.png">
@@ -32,3 +32,5 @@ export default defineConfig({
 
 ❤️ There are currently no options available. If you need any, please open an
 Issue! I'd love to hear your feedback.
+
+[Vite]: https://vitejs.dev/
