@@ -4,7 +4,7 @@ import type { Plugin } from "vite";
 import { Dirent } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-type ChromeFileTemplateOptions = {
+type IndexTemplateOptions = {
   rootName: string;
   hasParent: boolean;
   values: {
@@ -17,12 +17,12 @@ type ChromeFileTemplateOptions = {
     date_modified_string: string;
   }[];
 };
-const chromeFileTemplate = ejs.compile(
+const indexTemplate = ejs.compile(
   await readFile(
-    new URL("../assets/chrome-file-template.ejs", import.meta.url),
+    new URL("../assets/index-template.ejs", import.meta.url),
     "utf-8"
   )
-) as unknown as (options: ChromeFileTemplateOptions) => string;
+) as unknown as (options: IndexTemplateOptions) => string;
 
 interface DirectoryIndexOptions {}
 
@@ -31,7 +31,7 @@ function directoryIndex(options: DirectoryIndexOptions = {}): Plugin {
 
   // @ts-ignore
   let config: Parameters<Plugin["configResolved"]>[0];
-  
+
   return {
     name: "directory-index",
     configResolved: (c) => void (config = c),
@@ -65,7 +65,7 @@ function directoryIndex(options: DirectoryIndexOptions = {}): Plugin {
           return;
         }
 
-        const html = chromeFileTemplate({
+        const html = indexTemplate({
           rootName: fileURLToPath(fileURL),
           hasParent: url.pathname !== "/",
           values: files.map((file) => ({
