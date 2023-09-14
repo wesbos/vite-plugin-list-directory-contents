@@ -20,8 +20,8 @@ type IndexTemplateOptions = {
 const indexTemplate = ejs.compile(
   await readFile(
     new URL("../assets/index-template.ejs", import.meta.url),
-    "utf-8",
-  ),
+    "utf-8"
+  )
 ) as unknown as (options: IndexTemplateOptions) => string;
 
 interface DirectoryIndexOptions {}
@@ -55,6 +55,10 @@ function directoryIndex(options: DirectoryIndexOptions = {}): Plugin {
         try {
           files = await readdir(fileURL, { withFileTypes: true });
         } catch (error) {
+          return next();
+        }
+
+        if (files.some((file) => file.name === "index.html")) {
           return next();
         }
 
