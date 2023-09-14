@@ -3,7 +3,7 @@
 📂 Directory index plugin for the Vite dev server
 
 <p align=center>
-  <img src="https://i.imgur.com/TNMoGhn.png">
+  <img src="https://i.imgur.com/vhzjfm3.png">
 </p>
 
 ⚡ Works with [Vite] \
