@@ -5,7 +5,6 @@ import picomatch from "picomatch";
 import prettyBytes from "pretty-bytes";
 
 /**
- *
  * @param {{
  *   rootName: string
  *   hasParent: boolean
@@ -19,7 +18,6 @@ import prettyBytes from "pretty-bytes";
  *     date_modified_string: string
  *   }[]
  * }} param0
- * @returns
  */
 const myTemplate = ({ rootName, hasParent, values }) => `
 <!DOCTYPE html>
@@ -274,7 +272,7 @@ ${values
   .join("\n")}`;
 
 /**
- * @param {object} options
+ * @param {{}} options
  * @returns {import('vite').Plugin}
  */
 function directoryIndex(options = {}) {
