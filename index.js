@@ -342,7 +342,7 @@ function directoryIndex(options = {}) {
             const dirValues = dirDirents.map((dir) => ({
               name: dir.name,
               url: encodeURIComponent(dir.name),
-              isdir: true,
+              isdir: 1,
               size: 0,
               size_string: "",
               date_modified: 0,
@@ -355,7 +355,7 @@ function directoryIndex(options = {}) {
                 return {
                   name: file.name,
                   url: relativeURL,
-                  isdir: false,
+                  isdir: 0,
                   size: stats.size,
                   size_string: prettyBytes(stats.size),
                   date_modified: stats.mtimeMs,
