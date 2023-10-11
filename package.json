@@ -19,33 +19,27 @@
     "Jacob Hummer <jcbhmr@outlook.com> (https://jcbhmr.me/)"
   ],
   "type": "module",
-  "exports": "./dist/directoryIndex.js",
+  "exports": "./index.js",
   "files": [
-    "dist",
-    "assets"
+    "index.js"
   ],
   "workspaces": [
     "test"
   ],
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w",
-    "format": "prettier -w .",
-    "lint": "tsc --noEmit",
-    "pretest": "npm run build",
-    "test": "npm test -w test"
+    "dev": "npm run -w test dev",
+    "format": "prettier -w ."
   },
   "dependencies": {
-    "ejs": "^3.1.9"
+    "picomatch": "^2.3.1",
+    "pretty-bytes": "^6.1.1"
   },
   "devDependencies": {
-    "@types/ejs": "^3.1.2",
     "@types/node": "^20.6.0",
     "prettier": "^3.0.3",
-    "typescript": "^4.9.5",
-    "vite": "^4.0.0"
+    "vite": "^4.4.11"
   },
   "peerDependencies": {
-    "vite": "^4.0.0"
+    "vite": "^4.4.0"
   }
 }
