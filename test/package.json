@@ -1,0 +1,13 @@
+{
+  "name": "test",
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "vite-plugin-directory-index": "file:.."
+  },
+  "devDependencies": {
+    "vite": "^4.4.11"
+  }
+}
