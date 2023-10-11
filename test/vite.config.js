@@ -6,8 +6,8 @@ export default defineConfig({
   server: {
     fs: {
       allow: ["not-index.html", "package.json", "folder", "exclude-me.txt"],
-      deny: ["exclude-me.txt"]
-    }
+      deny: ["exclude-me.txt"],
+    },
   },
   plugins: [directoryIndex()],
 });

@@ -320,7 +320,7 @@ function directoryIndex(options = {}) {
               if (
                 config.server.fs.deny.some((x) => {
                   const matcher = picomatch(x, { cwd: config.root });
-                  const relativePath = relative(config.root, entryPath)
+                  const relativePath = relative(config.root, entryPath);
                   return matcher(relativePath);
                 })
               ) {
@@ -328,8 +328,8 @@ function directoryIndex(options = {}) {
               }
               if (config.server.fs.strict) {
                 return config.server.fs.allow.some((x) => {
-                  const dirPath = resolve(config.root, x)
-                  return (entryPath + sep).startsWith(dirPath + sep)
+                  const dirPath = resolve(config.root, x);
+                  return (entryPath + sep).startsWith(dirPath + sep);
                 });
               } else {
                 return true;

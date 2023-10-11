@@ -32,7 +32,8 @@ export default defineConfig({
 
 ### Options
 
-❤️ There are currently no options available. If you need any, please open an
-Issue! I'd love to hear your feedback.
+This plugin **respects [the `server.fs` options]**. Other than that, there's no available configuration. If you have need a config option, [open an Issue]!
 
 [Vite]: https://vitejs.dev/
+[the `server.fs` options]: https://vitejs.dev/config/server-options.html#server-fs-strict
+[open an issue]: https://github.com/jcbhmr/vite-plugin-directory-index/issues
