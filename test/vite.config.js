@@ -5,7 +5,7 @@ import directoryIndex from "vite-plugin-directory-index";
 export default defineConfig({
   server: {
     fs: {
-      allow: ["not-index.html", "folder", ".env.example"],
+      allow: ["not-index.html", "package.json", "folder", "exclude-me.txt"],
       deny: ["exclude-me.txt"]
     }
   },
